@@ -6,9 +6,9 @@
 -->
 <html>
 	<head>
-		<title>Ryan Lupinski | 𝚫 </title>
+		<title>Ryan Lupinski | Engineer </title>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<meta name="viewport" content="width=device-width, initial-scale=0.9, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
@@ -25,13 +25,13 @@
 						<div class="content">
 							<div class="inner">
 								<h1>Ryan Lupinski</h1>
-								<p>Engineer & Python application developer</p>
+								<p>Hardware-In-The-Loop & Systems Engineer</p>
 							</div>
 						</div>
 						<nav>
 							<ul>
-								<li><a href="#intro">Intro</a></li>
-								<li><a href="#work">Work</a></li>
+								<li><a href="#introduction">introduction</a></li>
+								<li><a href="#project">project</a></li>
 								<!-- <li><a href="#about">About</a></li> -->
 								<li><a href="#connect">Connect</a></li>
 								<!-- <li><a href="#elements">Elements</a></li> -->
@@ -42,36 +42,243 @@
 				<!-- Main -->
 					<div id="main">
 
-						<!-- Intro -->
-							<article id="intro">
-								<h2 class="major">Intro</h2>
-								<span class="image main"><img src="images/antique-crossed-keys-clipart-6.png" alt="" /></span>
-								<p>Hi, I'm Ryan. I'm an engineer living in Seattle.
-								I design HIL test systems for embedded controlers.
+						<!-- introduction -->
+							<article id="introduction">
+								<h3 class="major">introduction</h2>
+								<span class="image main"><img src="images/car.jpeg" alt="" /></span>
+								<p>Hi, I'm Ryan. I'm a Hardware-In-The-Loop Electrical Engineer living in Michigan.
+								I design HIL test systems for automotive and aerospace applications.
 								I have a growth mindset with a focus on delivering robust solutions through collaboration and leveraging Python for automation.
 								In my free time, I have developed a lightweight Python tool to automate the implementation of a quantitative investing strategy.
-								Check it out <a href="#work">here</a>.</p>
+								Check it out <a href="#project">here</a>.</p>
 							</article>
 
-						<!-- Work -->
-							<article id="work">
-								<h2 class="major">Work</h2>
-								<span class="image main"><img src="images/tool_overview.png" alt="" /></span>
-								<span class="image main"><img src="images/Backtest.png" alt="" /></span>
-								<p>Check out my Portfolio-Optimization Tool: A quantitative approach to optimal asset allocation using Python and Pandas</p>
-								<p>📈 <a href="https://github.com/ryanlupinski/Portfolio-Optimization">Portfolio Optimization Tool</a></p>
+						<!-- project -->
+							<article id="project">
+								<h3 class="major">project</h2>
+								<!-- <span class="image main"><img src="images/tool_overview.png" alt="" /></span> -->
+								<!-- <span class="image main"><img src="images/Backtest.png" alt="" /></span> -->
+								<!-- <p>Check out my Portfolio-Optimization Tool: A quantitative approach to optimal asset allocation using Python and Pandas</p> -->
+								<h2 id="portfolio-optimization-tool-a-quantitative-approach-to-optimal-asset-allocation">Portfolio-Optimization Tool: A quantitative approach to optimal asset allocation</h1>
+<h3 id="summary">Summary</h2>
+<ul>
+<li>This python script was developed to automate the investing strategy of Meb Faber&#39;s &#39;Trinity Portfolio&#39; as described here: <a href="https://www.cambriainvestments.com/wp-content/uploads/2016/07/Trinity_DIGITAL_final.pdf">Cambria Investments</a> (external link)</li>
+<li>Faber&#39;s Trinity Portfolio has 3  core elements: 1) assets diversified across a global investment set 2) tilts toward value and momentum and 3) exposure to trend following.</li>
+<li>11 ETFs make up the portfolio (See Listing 1).</li>
+<li>The first 50% of the portfolio allocates a fixed weighting to each asset class based on Global Market Portfolio (GMP) theory</li>
+<li>The second 50% uses momentum and trend-following calculations to allocate an additional 10% to the top 5 performing asset classes.</li>
+<li>Pandas is used to calculate the total return (momentum) and 200 day moving average (trend-following) of each ETF.</li>
+<li>The script is run once a month after the close of the last trading day and produces 3 .csv files that are imported into a spreadsheet.</li>
+<li>Formulas in the spreadsheet create the logic that determines the total allocation of all asset classes for the portfolio for the following month.</li>
+</ul>
+<hr>
+<h2 id="version-2-0-portfolio-optimization-tool">Version 2.0.: Portfolio Optimization Tool</h1>
+<h3 id="1st-50-buy-and-hold-fixed-weighting">1st 50%: &#39;Buy and hold&#39; fixed weighting</h2>
+<p>The portfolio comprises 11 ETFs which represent all major asset classes. The strategy tries to get the &#39;best of both worlds&#39; by making 50% of the portfolio &#39;buy and hold&#39;
+and the other 50% be dynamically allocated based on momentum and trend-following. Below is the fixed weighting based on GMP theory. We will divide each percentage listed below by 2 and use that as our &#39;buy and hold&#39; portion.
+<img src="docs/GMP-fixed-weight.png?raw=true" alt="Fixed weight"></p>
+<p>Figure 1. Fixed weight allocation portion of portfolio</p>
+<pre><code class="lang-python"># Define ETFs <span class="hljs-keyword">in</span> Portfolio
+portfolio = [
+    <span class="hljs-string">'MTUM'</span>, # US Stocks Momentum
+    <span class="hljs-string">'VTV'</span>,  # US Stocks Value
+    <span class="hljs-string">'VEU'</span>,  # Foreign Developed Stock
+    <span class="hljs-string">'VWO'</span>,  # Foreign Emerging Stocks
+    <span class="hljs-string">'VCIT'</span>, # Corporate Bonds
+    <span class="hljs-string">'VGLT'</span>, # <span class="hljs-number">30</span>Y Bonds
+    <span class="hljs-string">'BNDX'</span>, # <span class="hljs-number">10</span>Y Foreign Bonds
+    <span class="hljs-string">'VTIP'</span>, # TIPS
+    <span class="hljs-string">'DBC'</span>,  # Commodities
+    <span class="hljs-string">'IAU'</span>,  # Gold
+    <span class="hljs-string">'VNQ'</span>,  # REITS
+]
+</code></pre>
+<p>Listing 1. List of ETF symbol names</p>
+<h3 id="2nd-50-momentum-and-trend-following">2nd 50%: Momentum and Trend-Following</h2>
+<p>The tool uses Pandas to calculate total return and 200 day simple moving averages (200-Day SMA) of all asset classes.
+Below is rough pseudocode that describes the method for determining the momentum and trend-following allocation.</p>
+<pre><code><span class="hljs-keyword">for</span> etf <span class="hljs-keyword">in</span> portfolio:
+    calculate etf <span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">12</span> <span class="hljs-built_in">month</span> total <span class="hljs-literal">return</span>
+    average etf <span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">12</span> <span class="hljs-built_in">month</span> total <span class="hljs-literal">return</span>
+    rank etf average <span class="hljs-literal">return</span> (<span class="hljs-number">1</span>st{best} - <span class="hljs-number">11</span>th{worst})
+    use pandas <span class="hljs-keyword">to</span> calculate etf <span class="hljs-number">200</span>DSMA
+    use pandas <span class="hljs-keyword">to</span> find etf closing price <span class="hljs-keyword">on</span> <span class="hljs-keyword">last</span> trading <span class="hljs-built_in">day</span> <span class="hljs-keyword">of</span> <span class="hljs-built_in">month</span>
+    <span class="hljs-keyword">if</span> etf closing price &gt; <span class="hljs-number">200</span>DSMA <span class="hljs-keyword">and</span> etf average <span class="hljs-literal">return</span> rank &lt; <span class="hljs-number">6</span>:
+        allocate extra <span class="hljs-number">10</span>% <span class="hljs-keyword">to</span> etf
+
+<span class="hljs-keyword">if</span> <span class="hljs-number">5</span> etfs dont satisfy <span class="hljs-keyword">the</span> previous <span class="hljs-keyword">if</span> statement, allocte any remaining portion <span class="hljs-keyword">to</span> cash
+ie. <span class="hljs-keyword">if</span> only <span class="hljs-number">4</span> etfs rank <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> top <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> are <span class="hljs-keyword">above</span> <span class="hljs-number">200</span>DSMA, allocate remaining <span class="hljs-number">10</span>% cash
+    <span class="hljs-keyword">if</span> only <span class="hljs-number">2</span> etfs rank <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> top <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> are <span class="hljs-keyword">above</span> <span class="hljs-number">200</span>DSMA, allocate remaining <span class="hljs-number">30</span>% cash
+    <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> etfs rank <span class="hljs-keyword">in</span> <span class="hljs-keyword">the</span> top <span class="hljs-number">5</span> <span class="hljs-keyword">and</span> are <span class="hljs-keyword">above</span> <span class="hljs-number">200</span>DSMA, allocate <span class="hljs-number">50</span>% cash
+</code></pre><p>Listing 2. Pseudocode for momentum and trend-following with logic checks</p>
+<p>Now that the method for allocating the 2nd 50% (5 x 10% for the top 5 etfs, or a remainder in cash)
+lets look at how the tool performs these steps.</p>
+<h5 id="timeframes-for-total-returns">Timeframes for total returns</h4>
+<p>The tool follows Faber&#39;s strategy by creating timeframes for calculating returns of each ETF. These variables store start and end dates that are used as parameters for calculating returns and  200 day moving averages.
+Investment returns are calculated by finding the change in price from the last business day of each month, ie the total 1-month return from 4/29/22 (the last trading day in April 2022) is calculated from 3/31/22 (the last trading day in March).
+Once the last trading day to be used by the tool is found, BMonthEnd() subtracts the appropriate number of months and creates our time frame values as time stamps.</p>
+<pre><code class="lang-python"><span class="hljs-comment"># Define time frames</span>
+today = dt.date.tsToday()
+lastTradingDayOfMonth = Processor.last_trading_day()
+
+----- processing.py - -----------
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Processor</span>:</span>
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">last_trading_day</span><span class="hljs-params">()</span>:</span>
+        <span class="hljs-string">"""
+        This function checks today.day and today.month
+        against lastTradingDayOfMonth.day and lastTradingDayOfMonth.Month
+        To set lastTradingDayOfMonth to correct day.
+        :return:lastTradingDayOfMonth
+        """</span>
+        lastTradingDayOfMonth = today + BMonthEnd(<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">if</span> today.day &lt; lastTradingDayOfMonth.day <span class="hljs-keyword">or</span> today.month != lastTradingDayOfMonth.month:
+            lastTradingDayOfMonth = today + BMonthEnd(<span class="hljs-number">-1</span>)
+        <span class="hljs-keyword">else</span>:
+            lastTradingDayOfMonth = today + BMonthEnd(<span class="hljs-number">0</span>)
+
+        <span class="hljs-keyword">return</span> lastTradingDayOfMonth
+
+
+----- processing.py - -----------
+
+oneMonth = lastTradingDayOfMonth - BMonthEnd(<span class="hljs-number">1</span>)
+threeMonths = lastTradingDayOfMonth - BMonthEnd(<span class="hljs-number">3</span>)
+sixMonths = lastTradingDayOfMonth - BMonthEnd(<span class="hljs-number">6</span>)
+oneYear = lastTradingDayOfMonth - BMonthEnd(<span class="hljs-number">12</span>)
+</code></pre>
+<p>Now we have the start and end dates for scraping price data and determining ETF returns and calculating the 200-day moving average.</p>
+<h5 id="using-pandas">Using Pandas</h4>
+<p>The tool&#39;s initial version uses pandas to create dataframes for all the ETFs price data and stores them in memory and timeframes of 1m, 3m, 6m, and 12m from the datetime module.
+This is not the best way to do this (i.e. without using functions and objects) but later versions will correct this and handle more
+of the methodology entirely in python as etf objects, vs dataframes like in R programming.</p>
+<p>The <code>pandas</code> library and <code>pandas_datareader.data</code> as <code>web</code> give the tool functionality to retrieve stock/etf price data and save dataframes
+of 1,3,6,12 months using the following code. <code>dfETFPriceDataLatest = dfETFPriceDataOneYear.tail(1)</code> returns the closing price.</p>
+<pre><code class="lang-python">----- processing.<span class="hljs-keyword">py</span> ------------
+class Processor:
+    @staticmethod
+    def price_data(etfs, start_date, end_date, OHLCVAC):
+        <span class="hljs-string">""</span><span class="hljs-comment">"</span>
+        Returns <span class="hljs-keyword">a</span> dataframe of price data <span class="hljs-keyword">for</span> <span class="hljs-keyword">a</span> <span class="hljs-keyword">list</span> of ETFs over <span class="hljs-keyword">a</span> specific time frame
+        :param OHLCVAC: choose <span class="hljs-number">1</span> item: <span class="hljs-string">'Open'</span>, <span class="hljs-string">'High'</span>, <span class="hljs-string">'Low'</span>, <span class="hljs-string">'Close'</span>, <span class="hljs-string">'Volume'</span>, <span class="hljs-built_in">or</span> <span class="hljs-string">'Adj Close'</span>
+        :param end_date: <span class="hljs-keyword">last</span> day of time frame <span class="hljs-keyword">to</span> <span class="hljs-keyword">return</span> price data
+        :param etf<span class="hljs-variable">s:</span> ETF symbols <span class="hljs-keyword">to</span> <span class="hljs-built_in">get</span> price from
+        :param start_date: <span class="hljs-keyword">first</span> day of time frame <span class="hljs-keyword">to</span> <span class="hljs-keyword">return</span> price data
+        :<span class="hljs-keyword">return</span>: dataframe of price data
+        <span class="hljs-string">""</span><span class="hljs-comment">"</span>
+        dfPriceData = web.DataReader(etfs, <span class="hljs-string">'yahoo'</span>, start=start_date, end=end_date)[OHLCVAC]
+        <span class="hljs-keyword">return</span> dfPriceData
+
+----- processing.<span class="hljs-keyword">py</span> ------------
+
+# Create <span class="hljs-number">1</span><span class="hljs-keyword">m</span>, <span class="hljs-number">3</span><span class="hljs-keyword">m</span>, <span class="hljs-number">6</span><span class="hljs-keyword">m</span>, &amp; <span class="hljs-number">1</span><span class="hljs-keyword">y</span> data frames of daily adjusted closing price <span class="hljs-keyword">for</span> <span class="hljs-keyword">all</span> ETFs in portfolio
+dfETFPriceDataOneMonth = Processor.price_data(etfs=lstETFs, start_date=oneMonth, end_date=lastTradingDayOfMonth, OHLCVAC=<span class="hljs-string">'Adj Close'</span>)
+dfETFPriceDataThreeMonth = Processor.price_data(etfs=lstETFs, start_date=threeMonths, end_date=lastTradingDayOfMonth, OHLCVAC=<span class="hljs-string">'Adj Close'</span>)
+dfETFPriceDataSixMonth = Processor.price_data(etfs=lstETFs, start_date=sixMonths, end_date=lastTradingDayOfMonth, OHLCVAC=<span class="hljs-string">'Adj Close'</span>)
+dfETFPriceDataOneYear = Processor.price_data(etfs=lstETFs, start_date=oneYear, end_date=lastTradingDayOfMonth, OHLCVAC=<span class="hljs-string">'Adj Close'</span>)
+dfETFPriceDataLatest = dfETFPriceDataOneYear.tail(<span class="hljs-number">1</span>)
+</code></pre>
+<h5 id="total-returns">Total Returns</h4>
+<p>Now that we have dataframes of price data, we can calculate the total return
+for each timeframe then concatenate the results using <code>pd.concate</code> to a list of returns.
+The .tail(1) returns the return on the last day of the timeframe, which is the only one we care about.</p>
+<pre><code class="lang-python">----- processing.py ------------
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Processor</span>:</span>
+<span class="hljs-meta">    @staticmethod</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">total_returns</span><span class="hljs-params">(df)</span>:</span>
+        <span class="hljs-string">"""
+        Calculates total return of ETFs for each dataframe
+        :param df: dataframe to find total returns
+        :return: dataframe of returns
+        """</span>
+        dfPercentChange = df.pct_change()
+        dfCumulativeReturn = ((<span class="hljs-number">1</span> + dfPercentChange).cumprod() - <span class="hljs-number">1</span>)
+        dfCumulativeReturnLatest = dfCumulativeReturn.tail(<span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> dfCumulativeReturnLatest
+
+----- processing.py ------------
+
+<span class="hljs-comment"># Calculate 1m, 3m, 6m, &amp; 1y returns for all ETFs in portfolio</span>
+dfETFOneMonthTotalReturn = Processor.total_returns(dfETFPriceDataOneMonth)
+dfETFThreeMonthTotalReturn = Processor.total_returns(dfETFPriceDataThreeMonth)
+dfETFSixMonthTotalReturn = Processor.total_returns(dfETFPriceDataSixMonth)
+dfETFOneYearTotalReturn = Processor.total_returns(dfETFPriceDataOneYear)
+
+lstOfTotalReturns = [
+    dfETFOneMonthTotalReturn,
+    dfETFThreeMonthTotalReturn,
+    dfETFSixMonthTotalReturn,
+    dfETFOneYearTotalReturn
+]
+
+dfTotalReturns = pd.concat(lstOfTotalReturns)
+dfTotalReturns = dfTotalReturns.assign(Returns=[<span class="hljs-string">'1 month'</span>, <span class="hljs-string">'3 month'</span>, <span class="hljs-string">'6 month'</span>, <span class="hljs-string">'1 year'</span>])
+</code></pre>
+<h5 id="200-day-simple-moving-average">200-Day Simple Moving Average</h4>
+<p>The 1-year time frame must be used (for obvious reasons) to calculate the 200-Day SMA. The <code>.rolling</code>
+function gives us our window parameter and the <code>.mean()</code> function averages over the
+window. Again, <code>.tail()</code> returns only the last day&#39;s 200-Day SMA, so we can compare against the closing price on the last trading
+day of the month.</p>
+<pre><code class="lang-python">----- processing.<span class="hljs-keyword">py</span> ------------
+class Processor:
+    @staticmethod
+    def moving_average(etfs, start_date, end_date, OHLCVAC, window):
+        <span class="hljs-string">""</span><span class="hljs-comment">"</span>
+        Calculates <span class="hljs-number">200</span> day moving average <span class="hljs-keyword">for</span> ETFs <span class="hljs-built_in">and</span> returns dataframe of latest average
+        <span class="hljs-keyword">for</span> the given time frame
+        :param <span class="hljs-keyword">windo</span><span class="hljs-variable">w:</span> in<span class="hljs-variable">t:</span> window of days <span class="hljs-keyword">to</span> calculate average
+        :param OHLCVAC: choose <span class="hljs-number">1</span> item: <span class="hljs-string">'Open'</span>, <span class="hljs-string">'High'</span>, <span class="hljs-string">'Low'</span>, <span class="hljs-string">'Close'</span>, <span class="hljs-string">'Volume'</span>, <span class="hljs-built_in">or</span> <span class="hljs-string">'Adj Close'</span>
+        :param end_date: <span class="hljs-keyword">last</span> day of time frame <span class="hljs-keyword">to</span> <span class="hljs-keyword">return</span> price data
+        :param start_date: <span class="hljs-keyword">first</span> day of time frame <span class="hljs-keyword">to</span> <span class="hljs-keyword">return</span> price data
+        :param etf<span class="hljs-variable">s:</span> ETF symbols <span class="hljs-keyword">to</span> <span class="hljs-built_in">get</span> price from
+        :<span class="hljs-keyword">return</span>: dataframe of <span class="hljs-number">200</span> day moving averages <span class="hljs-keyword">for</span> each ETF
+        <span class="hljs-string">""</span><span class="hljs-comment">"</span>
+        df = web.DataReader(etfs, <span class="hljs-string">'yahoo'</span>, start=start_date, end=end_date)[OHLCVAC]
+        dfMovingAverage = df.rolling(window=window).mean()
+        <span class="hljs-keyword">return</span> dfMovingAverage
+
+----- processing.<span class="hljs-keyword">py</span> ------------
+
+# Create dataframes of <span class="hljs-number">200</span> day simple moving average <span class="hljs-keyword">for</span> <span class="hljs-keyword">all</span> ETFs in portfolio
+dfETF200DayMovingAverage = Processor.moving_average(etfs=lstETFs, start_date=oneYear, end_date=lastTradingDayOfMonth, OHLCVAC=<span class="hljs-string">'Adj Close'</span>, window=<span class="hljs-number">200</span>)
+dfETF200DayMovingAverageLatest = dfETF200DayMovingAverage.tail(<span class="hljs-number">1</span>)
+</code></pre>
+<h5 id="export-dataframes-as-csvs">Export dataframes as CSVs</h4>
+<p>The current projecting directory is found and all the dataframes are exported to csv files in /CSV.
+These CSVs are copied into the spreadsheet and the functions within tabulate the trend-following portion
+that to the buy and hold portion.</p>
+<pre><code class="lang-python"><span class="hljs-comment"># Create csvs for closing price data, 200 day simple moving average data, and returns data</span>
+path = os.getcwd() + <span class="hljs-string">"/Dataframes"</span>
+dfETFPriceDataOneYear.to_csv(os.path.join(path, <span class="hljs-string">r'Portfolio 1 Year Closing Price Data.csv'</span>))
+dfETF200DayMovingAverageLatest.to_csv(os.path.join(path, <span class="hljs-string">r'Portfolio Latest 200D SMA.csv'</span>))
+dfTotalReturns.to_csv(os.path.join(path, <span class="hljs-string">r'Portfolio Returns.csv'</span>))
+</code></pre>
+<h5 id="final-output">Final Output</h4>
+<p>The tool was run on 6-30-22 and the formulas in the spreadsheet implement the logic
+described in the pseudocode above. This would give the user the percent allocation his or her
+portfolio should have for the following month, 7/22.</p>
+<span class="image main"><img src="images/Backtest.png" alt="" /></span>
+Figure 2. Output in Excel showing allocation for the month of 7/22</p>
+<h5 id="references">References</h4>
+<ul>
+<li>Meb Faber (2016). <a href="https://www.cambriainvestments.com/wp-content/uploads/2016/07/Trinity_DIGITAL_final.pdf">The Trinity Portfolio</a></li>
+</ul>
+
+								<p>📈 <a href="https://github.com/ryanlupinski/Portfolio-Optimization">GitHub repository: Portfolio Optimization Tool</a></p>
 							</article>
 
 						<!-- About -->
 							<!-- <article id="about">
-								<h2 class="major">About</h2>
+								<h3 class="major">About</h2>
 								<span class="image main"><img src="images/about.jpg" alt="" /></span>
 								<p>About me</p>
 							</article> -->
 
 						<!-- connect -->
 							<article id="connect">
-								<h2 class="major">Connect</h2>
+								<h3 class="major">Connect</h2>
 								<!-- <form method="post" action="#">
 									<div class="fields">
 										<div class="field half">
@@ -101,23 +308,23 @@
 
 						<!-- Elements -->
 							<article id="elements">
-								<h2 class="major">Elements</h2>
+								<h3 class="major">Elements</h2>
 
 								<section>
-									<h3 class="major">Text</h3>
+									<h5 class="major">Text</h4>
 									<p>This is <b>bold</b> and this is <strong>strong</strong>. This is <i>italic</i> and this is <em>emphasized</em>.
 									This is <sup>superscript</sup> text and this is <sub>subscript</sub> text.
 									This is <u>underlined</u> and this is code: <code>for (;;) { ... }</code>. Finally, <a href="#">this is a link</a>.</p>
 									<hr />
-									<h2>Heading Level 2</h2>
-									<h3>Heading Level 3</h3>
-									<h4>Heading Level 4</h4>
+									<h3>Heading Level 2</h2>
+									<h5>Heading Level 3</h4>
+									<h5>Heading Level 4</h4>
 									<h5>Heading Level 5</h5>
 									<h6>Heading Level 6</h6>
 									<hr />
-									<h4>Blockquote</h4>
+									<h5>Blockquote</h4>
 									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
-									<h4>Preformatted</h4>
+									<h5>Preformatted</h4>
 									<pre><code>i = 0;
 
 while (!deck.isInOrder()) {
@@ -130,23 +337,23 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 								</section>
 
 								<section>
-									<h3 class="major">Lists</h3>
+									<h5 class="major">Lists</h4>
 
-									<h4>Unordered</h4>
+									<h5>Unordered</h4>
 									<ul>
 										<li>Dolor pulvinar etiam.</li>
 										<li>Sagittis adipiscing.</li>
 										<li>Felis enim feugiat.</li>
 									</ul>
 
-									<h4>Alternate</h4>
+									<h5>Alternate</h4>
 									<ul class="alt">
 										<li>Dolor pulvinar etiam.</li>
 										<li>Sagittis adipiscing.</li>
 										<li>Felis enim feugiat.</li>
 									</ul>
 
-									<h4>Ordered</h4>
+									<h5>Ordered</h4>
 									<ol>
 										<li>Dolor pulvinar etiam.</li>
 										<li>Etiam vel felis viverra.</li>
@@ -155,7 +362,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 										<li>Etiam vel felis lorem.</li>
 										<li>Felis enim et feugiat.</li>
 									</ol>
-									<h4>Icons</h4>
+									<h5>Icons</h4>
 									<ul class="icons">
 										<li><a href="#" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
 										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
@@ -163,7 +370,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 										<li><a href="#" class="icon brands fa-github"><span class="label">Github</span></a></li>
 									</ul>
 
-									<h4>Actions</h4>
+									<h5>Actions</h4>
 									<ul class="actions">
 										<li><a href="#" class="button primary">Default</a></li>
 										<li><a href="#" class="button">Default</a></li>
@@ -175,8 +382,8 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 								</section>
 
 								<section>
-									<h3 class="major">Table</h3>
-									<h4>Default</h4>
+									<h5 class="major">Table</h4>
+									<h5>Default</h4>
 									<div class="table-wrapper">
 										<table>
 											<thead>
@@ -222,7 +429,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 										</table>
 									</div>
 
-									<h4>Alternate</h4>
+									<h5>Alternate</h4>
 									<div class="table-wrapper">
 										<table class="alt">
 											<thead>
@@ -270,7 +477,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 								</section>
 
 								<section>
-									<h3 class="major">Buttons</h3>
+									<h5 class="major">Buttons</h4>
 									<ul class="actions">
 										<li><a href="#" class="button primary">Primary</a></li>
 										<li><a href="#" class="button">Default</a></li>
@@ -290,7 +497,7 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 								</section>
 
 								<section>
-									<h3 class="major">Form</h3>
+									<h5 class="major">Form</h4>
 									<form method="post" action="#">
 										<div class="fields">
 											<div class="field half">
